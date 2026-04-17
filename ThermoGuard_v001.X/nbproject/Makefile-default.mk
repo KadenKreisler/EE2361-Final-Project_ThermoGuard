@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=ThermoGaurd_main_v001.c
+SOURCEFILES_QUOTED_IF_SPACED=ThermoGaurd_main_v001.c ThermoGaurd_PIR_v001.c ThermoGaurd_Joystick_v001.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ThermoGaurd_main_v001.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ThermoGaurd_main_v001.o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o.d ${OBJECTDIR}/ThermoGaurd_PIR_v001.o.d ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o
+OBJECTFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o
 
 # Source Files
-SOURCEFILES=ThermoGaurd_main_v001.c
+SOURCEFILES=ThermoGaurd_main_v001.c ThermoGaurd_PIR_v001.c ThermoGaurd_Joystick_v001.c
 
 
 
@@ -95,12 +95,36 @@ ${OBJECTDIR}/ThermoGaurd_main_v001.o: ThermoGaurd_main_v001.c  .generated_files/
 	@${RM} ${OBJECTDIR}/ThermoGaurd_main_v001.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ThermoGaurd_main_v001.c  -o ${OBJECTDIR}/ThermoGaurd_main_v001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ThermoGaurd_main_v001.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
+${OBJECTDIR}/ThermoGaurd_PIR_v001.o: ThermoGaurd_PIR_v001.c  .generated_files/flags/default/418f58bb45309b77a89b27d20f05998b77d1b217 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_PIR_v001.o.d 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_PIR_v001.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ThermoGaurd_PIR_v001.c  -o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ThermoGaurd_PIR_v001.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/ThermoGaurd_Joystick_v001.o: ThermoGaurd_Joystick_v001.c  .generated_files/flags/default/94f458763cd60fc6ca1b592c33e6b7298a6a3637 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ThermoGaurd_Joystick_v001.c  -o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
 else
 ${OBJECTDIR}/ThermoGaurd_main_v001.o: ThermoGaurd_main_v001.c  .generated_files/flags/default/2b3af2196c943366680ca14944a89e0d48ea323b .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/ThermoGaurd_main_v001.o.d 
 	@${RM} ${OBJECTDIR}/ThermoGaurd_main_v001.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ThermoGaurd_main_v001.c  -o ${OBJECTDIR}/ThermoGaurd_main_v001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ThermoGaurd_main_v001.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/ThermoGaurd_PIR_v001.o: ThermoGaurd_PIR_v001.c  .generated_files/flags/default/6bdd516d24d7fcb061f204c175a99e2391025b62 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_PIR_v001.o.d 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_PIR_v001.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ThermoGaurd_PIR_v001.c  -o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ThermoGaurd_PIR_v001.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/ThermoGaurd_Joystick_v001.o: ThermoGaurd_Joystick_v001.c  .generated_files/flags/default/887cf60fbafa54f7648ecf869e6aaf5dc94a90f3 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ThermoGaurd_Joystick_v001.c  -o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 endif
 
@@ -121,7 +145,7 @@ endif
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 ${DISTDIR}/ThermoGuard_v001.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    
 	@${MKDIR} ${DISTDIR} 
-	${MP_CC} $(MP_EXTRA_LD_PRE)  -o ${DISTDIR}/ThermoGuard_v001.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -D__DEBUG=__DEBUG   -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)      -Wl,,,--defsym=__MPLAB_BUILD=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,-D__DEBUG=__DEBUG,,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem,--memorysummary,${DISTDIR}/memoryfile.xml$(MP_EXTRA_LD_POST)  -mdfp="${DFP_DIR}/xc16" 
+	${MP_CC} $(MP_EXTRA_LD_PRE)  -o ${DISTDIR}/ThermoGuard_v001.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -D__DEBUG=__DEBUG   -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)   -mreserve=data@0x800:0x81F -mreserve=data@0x820:0x821 -mreserve=data@0x822:0x823 -mreserve=data@0x824:0x825 -mreserve=data@0x826:0x84F   -Wl,,,--defsym=__MPLAB_BUILD=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,-D__DEBUG=__DEBUG,,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem,--memorysummary,${DISTDIR}/memoryfile.xml$(MP_EXTRA_LD_POST)  -mdfp="${DFP_DIR}/xc16" 
 	
 else
 ${DISTDIR}/ThermoGuard_v001.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   

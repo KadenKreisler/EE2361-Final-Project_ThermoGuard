@@ -4,15 +4,10 @@ Tool Name:
   c:\program files\microchip\xc16\v2.10\bin\bin\..\bin/elf-ld.exe
 
 Command:
-  -TC:\\Users\\Kaden\\AppData\\Local\\Temp\\tmp00006714.00 \
-  -TC:\\Users\\Kaden\\AppData\\Local\\Temp\\tmp00006714.01 \
-  -TC:\\Users\\Kaden\\AppData\\Local\\Temp\\tmp00006714.02 \
-  -TC:\\Users\\Kaden\\AppData\\Local\\Temp\\tmp00006714.03 \
-  -TC:\\Users\\Kaden\\AppData\\Local\\Temp\\tmp00006714.04 \
   -p24FJ64GA002 \
   --mdfp=C:/Program Files/Microchip/MPLABX/v6.25/packs/Microchip/PIC24F-GA-GB_DFP/1.10.375/xc16 \
   -o \
-  dist/default/debug/ThermoGuard_v001.X.debug.elf \
+  dist/default/production/ThermoGuard_v001.X.production.elf \
   -Lc:/program files/microchip/xc16/v2.10/bin/bin/.. \
   -LC:/Program Files/Microchip/MPLABX/v6.25/packs/Microchip/PIC24F-GA-GB_DFP/1.10.375/xc16/bin/../support/PIC24F/gld \
   -Lc:/program files/microchip/xc16/v2.10/bin/bin/../../lib \
@@ -23,13 +18,11 @@ Command:
   -Lc:/program files/microchip/xc16/v2.10/bin/bin/../../support/dsPIC33C/gld \
   -Lc:/program files/microchip/xc16/v2.10/bin/bin/../../support/dsPIC33E/gld \
   -Lc:/program files/microchip/xc16/v2.10/bin/bin/../../support/dsPIC33F/gld \
-  build/default/debug/ThermoGaurd_main_v001.o \
-  build/default/debug/ThermoGaurd_PIR_v001.o \
-  build/default/debug/ThermoGaurd_Joystick_v001.o \
+  build/default/production/ThermoGaurd_main_v001.o \
+  build/default/production/ThermoGaurd_PIR_v001.o \
+  build/default/production/ThermoGaurd_Joystick_v001.o \
   --defsym=__MPLAB_BUILD=1 \
-  --defsym=__MPLAB_DEBUG=1 \
-  --defsym=__DEBUG=1 \
-  -Tp24FJ64GA002.gld.05 \
+  -Tp24FJ64GA002.gld.00 \
   --stack=16 \
   --check-sections \
   --data-init \
@@ -41,10 +34,10 @@ Command:
   --stackguard=16 \
   --no-force-link \
   --smart-io \
-  -Map=dist/default/debug/ThermoGuard_v001.X.debug.map \
+  -Map=dist/default/production/ThermoGuard_v001.X.production.map \
   --report-mem \
   --memorysummary \
-  dist/default/debug/memoryfile.xml \
+  dist/default/production/memoryfile.xml \
   -start-group \
   --library=c99-pic30-elf \
   --library=m-elf \
@@ -73,25 +66,20 @@ Default Scalar Model: Small
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
-.text                        0x200               0x10e           0x195  (405)
-.text                        0x30e                0x9c            0xea  (234)
-.dinit                       0x3aa                 0x8             0xc  (12)
+.text                        0x200               0x108           0x18c  (396)
+.text                        0x308                0x9c            0xea  (234)
+.dinit                       0x3a4                 0x8             0xc  (12)
 
-                 Total "program" memory used (bytes):          0x28b  (651) <1%
+                 Total "program" memory used (bytes):          0x282  (642) <1%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-reserve_data_0x800           0x800                0x20            0x20  (32)
-reserve_data_0x820           0x820                 0x2             0x2  (2)
-reserve_data_0x822           0x822                 0x2             0x2  (2)
-reserve_data_0x824           0x824                 0x2             0x2  (2)
-reserve_data_0x826           0x826                0x2a            0x2a  (42)
-.nbss                        0x850                   0             0x8  (8)
+.nbss                        0x800                   0             0x8  (8)
 
-                 Total "data" memory used (bytes):           0x58  (88) 1%
+                 Total "data" memory used (bytes):            0x8  (8) <1%
 
 
 Dynamic Memory Usage
@@ -99,26 +87,26 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x858                              0x1fa8  (8104)
+stack                        0x808                              0x1ff8  (8184)
 
-                 Maximum dynamic memory (bytes):         0x1fa8  (8104)
+                 Maximum dynamic memory (bytes):         0x1ff8  (8184)
 
 Info: Project is using a large data memory model when small data memory model is sufficient.
 
 
 External Symbols in Data Memory (by address):
 
-                    0x0850                  _X
-                    0x0852                  _Y
-                    0x0854                  _b1
-                    0x0856                  _PIR
+                    0x0800                  _X
+                    0x0802                  _Y
+                    0x0804                  _b1
+                    0x0806                  _PIR
 
 External Symbols in Data Memory (by name):
 
-                    0x0856                  _PIR
-                    0x0850                  _X
-                    0x0852                  _Y
-                    0x0854                  _b1
+                    0x0806                  _PIR
+                    0x0800                  _X
+                    0x0802                  _Y
+                    0x0804                  _b1
 
 External Symbols in Program Memory (by address):
 
@@ -127,30 +115,30 @@ External Symbols in Program Memory (by address):
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x0002c8                  __ADC1Interrupt
-                  0x000308                  __DefaultInterrupt
-                  0x00030e                  _Joystick_init
-                  0x000360                  _joystick_getX
-                  0x000368                  _joystick_getY
-                  0x000370                  _PIR_init
-                  0x000384                  _PIR_GetData
-                  0x000392                  _setup
-                  0x0003a4                  _main
+                  0x000302                  __DefaultInterrupt
+                  0x000308                  _Joystick_init
+                  0x00035a                  _joystick_getX
+                  0x000362                  _joystick_getY
+                  0x00036a                  _PIR_init
+                  0x00037e                  _PIR_GetData
+                  0x00038c                  _setup
+                  0x00039e                  _main
 
 External Symbols in Program Memory (by name):
 
-                  0x00030e                  _Joystick_init
-                  0x000384                  _PIR_GetData
-                  0x000370                  _PIR_init
+                  0x000308                  _Joystick_init
+                  0x00037e                  _PIR_GetData
+                  0x00036a                  _PIR_init
                   0x0002c8                  __ADC1Interrupt
-                  0x000308                  __DefaultInterrupt
+                  0x000302                  __DefaultInterrupt
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x000360                  _joystick_getX
-                  0x000368                  _joystick_getY
-                  0x0003a4                  _main
-                  0x000392                  _setup
+                  0x00035a                  _joystick_getX
+                  0x000362                  _joystick_getY
+                  0x00039e                  _main
+                  0x00038c                  _setup
 
 Memory Configuration
 
@@ -167,37 +155,10 @@ CONFIG1          0x00abfe           0x000002
 
 Linker script and memory map
 
-
-reserve_data_0x800
-                    0x0800         0x20
-                    0x0820                  . = 0x20
- *fill*             0x0800         0x2000
-
-reserve_data_0x820
-                    0x0820          0x2
-                    0x0822                  . = 0x2
- *fill*             0x0820          0x200
-
-reserve_data_0x822
-                    0x0822          0x2
-                    0x0824                  . = 0x2
- *fill*             0x0822          0x200
-
-reserve_data_0x824
-                    0x0824          0x2
-                    0x0826                  . = 0x2
- *fill*             0x0824          0x200
-
-reserve_data_0x826
-                    0x0826         0x2a
-                    0x0850                  . = 0x2a
- *fill*             0x0826         0x2a00
-LOAD build/default/debug/ThermoGaurd_main_v001.o
-LOAD build/default/debug/ThermoGaurd_PIR_v001.o
-LOAD build/default/debug/ThermoGaurd_Joystick_v001.o
+LOAD build/default/production/ThermoGaurd_main_v001.o
+LOAD build/default/production/ThermoGaurd_PIR_v001.o
+LOAD build/default/production/ThermoGaurd_Joystick_v001.o
                     0x0001                  __MPLAB_BUILD = 0x1
-                    0x0001                  __MPLAB_DEBUG = 0x1
-                    0x0001                  __DEBUG = 0x1
 LOAD pPIC24Fxxx
 LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libfx-elf.a
                     0xabfc                  __CONFIG2 = 0xabfc
@@ -216,7 +177,7 @@ LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libfx-elf.a
                   0x000002          0x2 SHORT 0x0 ((ABSOLUTE (__reset) >> 0x10) & 0x7f)
                   0x000003          0x2 SHORT 0x0
 
-.text             0x000200        0x10e
+.text             0x000200        0x108
  *(.init)
  .init            0x000200         0x4c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(crt0_standard.o)
                   0x000200                  __resetPRI
@@ -228,18 +189,18 @@ LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libfx-elf.a
  *(.user_init)
  *(.handle)
  *(.isr*)
- .isr.text        0x0002c8         0x40 build/default/debug/ThermoGaurd_main_v001.o
+ .isr.text        0x0002c8         0x3a build/default/production/ThermoGaurd_main_v001.o
                   0x0002c8                  __ADC1Interrupt
- .isr             0x000308          0x4 default_isr
-                  0x000308                  __DefaultInterrupt
+ .isr             0x000302          0x4 default_isr
+                  0x000302                  __DefaultInterrupt
  *(.libc)
  *(.libm)
  *(.libdsp)
  *(.lib*)
  .libpic30_crt_start_mode
-                  0x00030c          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(crt_start_mode_normal.Meo)
-                  0x00030c                  __crt_start_mode
-                  0x00030c                  __crt_start_mode_normal
+                  0x000306          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(crt_start_mode_normal.Meo)
+                  0x000306                  __crt_start_mode
+                  0x000306                  __crt_start_mode_normal
 
 usercode
  *(usercode)
@@ -255,34 +216,34 @@ __CONFIG1
 
 .debug_info       0x000000       0x17f9
  *(.debug_info)
- .debug_info      0x000000        0x605 build/default/debug/ThermoGaurd_main_v001.o
- .debug_info      0x000605        0x432 build/default/debug/ThermoGaurd_PIR_v001.o
- .debug_info      0x000a37        0xdc2 build/default/debug/ThermoGaurd_Joystick_v001.o
+ .debug_info      0x000000        0x605 build/default/production/ThermoGaurd_main_v001.o
+ .debug_info      0x000605        0x432 build/default/production/ThermoGaurd_PIR_v001.o
+ .debug_info      0x000a37        0xdc2 build/default/production/ThermoGaurd_Joystick_v001.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x312
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x122 build/default/debug/ThermoGaurd_main_v001.o
- .debug_abbrev    0x000122         0xe3 build/default/debug/ThermoGaurd_PIR_v001.o
- .debug_abbrev    0x000205        0x10d build/default/debug/ThermoGaurd_Joystick_v001.o
+ .debug_abbrev    0x000000        0x122 build/default/production/ThermoGaurd_main_v001.o
+ .debug_abbrev    0x000122         0xe3 build/default/production/ThermoGaurd_PIR_v001.o
+ .debug_abbrev    0x000205        0x10d build/default/production/ThermoGaurd_Joystick_v001.o
 
 .debug_line       0x000000        0x380
  *(.debug_line)
- .debug_line      0x000000        0x133 build/default/debug/ThermoGaurd_main_v001.o
- .debug_line      0x000133        0x11a build/default/debug/ThermoGaurd_PIR_v001.o
- .debug_line      0x00024d        0x133 build/default/debug/ThermoGaurd_Joystick_v001.o
+ .debug_line      0x000000        0x133 build/default/production/ThermoGaurd_main_v001.o
+ .debug_line      0x000133        0x11a build/default/production/ThermoGaurd_PIR_v001.o
+ .debug_line      0x00024d        0x133 build/default/production/ThermoGaurd_Joystick_v001.o
 
 .debug_frame      0x000000        0x138
  *(.debug_frame)
- .debug_frame     0x000000         0x8e build/default/debug/ThermoGaurd_main_v001.o
- .debug_frame     0x00008e         0x48 build/default/debug/ThermoGaurd_PIR_v001.o
- .debug_frame     0x0000d6         0x62 build/default/debug/ThermoGaurd_Joystick_v001.o
+ .debug_frame     0x000000         0x8e build/default/production/ThermoGaurd_main_v001.o
+ .debug_frame     0x00008e         0x48 build/default/production/ThermoGaurd_PIR_v001.o
+ .debug_frame     0x0000d6         0x62 build/default/production/ThermoGaurd_Joystick_v001.o
 
 .debug_str        0x000000         0xa6
  *(.debug_str)
- .debug_str       0x000000         0x1e build/default/debug/ThermoGaurd_main_v001.o
- .debug_str       0x00001e         0x14 build/default/debug/ThermoGaurd_PIR_v001.o
- .debug_str       0x000032         0x74 build/default/debug/ThermoGaurd_Joystick_v001.o
+ .debug_str       0x000000         0x1e build/default/production/ThermoGaurd_main_v001.o
+ .debug_str       0x00001e         0x14 build/default/production/ThermoGaurd_PIR_v001.o
+ .debug_str       0x000032         0x74 build/default/production/ThermoGaurd_Joystick_v001.o
 
 .debug_loc
  *(.debug_loc)
@@ -294,11 +255,11 @@ __CONFIG1
                   0x000000         0xca
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0x53 build/default/debug/ThermoGaurd_main_v001.o
+                  0x000000         0x53 build/default/production/ThermoGaurd_main_v001.o
  .debug_pubnames
-                  0x000053         0x2f build/default/debug/ThermoGaurd_PIR_v001.o
+                  0x000053         0x2f build/default/production/ThermoGaurd_PIR_v001.o
  .debug_pubnames
-                  0x000082         0x48 build/default/debug/ThermoGaurd_Joystick_v001.o
+                  0x000082         0x48 build/default/production/ThermoGaurd_Joystick_v001.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -306,11 +267,11 @@ __CONFIG1
 .debug_aranges    0x000000         0x48
  *(.debug_aranges)
  .debug_aranges
-                  0x000000         0x18 build/default/debug/ThermoGaurd_main_v001.o
+                  0x000000         0x18 build/default/production/ThermoGaurd_main_v001.o
  .debug_aranges
-                  0x000018         0x18 build/default/debug/ThermoGaurd_PIR_v001.o
+                  0x000018         0x18 build/default/production/ThermoGaurd_PIR_v001.o
  .debug_aranges
-                  0x000030         0x18 build/default/debug/ThermoGaurd_Joystick_v001.o
+                  0x000030         0x18 build/default/production/ThermoGaurd_Joystick_v001.o
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -895,62 +856,62 @@ LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a
 LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libm-elf.a
 LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a
 END GROUP
-OUTPUT(dist/default/debug/ThermoGuard_v001.X.debug.elf elf32-pic30)
+OUTPUT(dist/default/production/ThermoGuard_v001.X.production.elf elf32-pic30)
 LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
                   0x000048        0x21f
  .debug_pubtypes
-                  0x000048         0x7c build/default/debug/ThermoGaurd_main_v001.o
+                  0x000048         0x7c build/default/production/ThermoGaurd_main_v001.o
  .debug_pubtypes
-                  0x0000c4         0x5d build/default/debug/ThermoGaurd_PIR_v001.o
+                  0x0000c4         0x5d build/default/production/ThermoGaurd_PIR_v001.o
  .debug_pubtypes
-                  0x000121        0x146 build/default/debug/ThermoGaurd_Joystick_v001.o
+                  0x000121        0x146 build/default/production/ThermoGaurd_Joystick_v001.o
 
 __c30_signature
                   0x000267         0x1e
  __c30_signature
-                  0x000267          0x6 build/default/debug/ThermoGaurd_main_v001.o
+                  0x000267          0x6 build/default/production/ThermoGaurd_main_v001.o
  __c30_signature
-                  0x00026d          0x6 build/default/debug/ThermoGaurd_PIR_v001.o
+                  0x00026d          0x6 build/default/production/ThermoGaurd_PIR_v001.o
  __c30_signature
-                  0x000273          0x6 build/default/debug/ThermoGaurd_Joystick_v001.o
+                  0x000273          0x6 build/default/production/ThermoGaurd_Joystick_v001.o
  __c30_signature
                   0x000279          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(crt0_standard.o)
  __c30_signature
                   0x00027f          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(data_init_standard.o)
 
-.nbss               0x0850          0x8
- .nbss              0x0850          0x8 build/default/debug/ThermoGaurd_main_v001.o
-                    0x0850                  _X
-                    0x0852                  _Y
-                    0x0854                  _b1
-                    0x0856                  _PIR
+.nbss               0x0800          0x8
+ .nbss              0x0800          0x8 build/default/production/ThermoGaurd_main_v001.o
+                    0x0800                  _X
+                    0x0802                  _Y
+                    0x0804                  _b1
+                    0x0806                  _PIR
 
 .config_JTAGEN    0x00abfe          0x2
  .config_JTAGEN
-                  0x00abfe          0x2 build/default/debug/ThermoGaurd_main_v001.o
+                  0x00abfe          0x2 build/default/production/ThermoGaurd_main_v001.o
 
 .config_IESO      0x00abfc          0x2
- .config_IESO     0x00abfc          0x2 build/default/debug/ThermoGaurd_main_v001.o
+ .config_IESO     0x00abfc          0x2 build/default/production/ThermoGaurd_main_v001.o
 
 .ivt._ADC1Interrupt
                   0x00002e          0x2
  .ivt._ADC1Interrupt
-                  0x00002e          0x2 build/default/debug/ThermoGaurd_main_v001.o
+                  0x00002e          0x2 build/default/production/ThermoGaurd_main_v001.o
 
-.text             0x00030e         0x9c
- .text            0x00030e         0x62 build/default/debug/ThermoGaurd_Joystick_v001.o
-                  0x00030e                  _Joystick_init
-                  0x000360                  _joystick_getX
-                  0x000368                  _joystick_getY
- .text            0x000370         0x22 build/default/debug/ThermoGaurd_PIR_v001.o
-                  0x000370                  _PIR_init
-                  0x000384                  _PIR_GetData
- .text            0x000392         0x18 build/default/debug/ThermoGaurd_main_v001.o
-                  0x000392                  _setup
-                  0x0003a4                  _main
+.text             0x000308         0x9c
+ .text            0x000308         0x62 build/default/production/ThermoGaurd_Joystick_v001.o
+                  0x000308                  _Joystick_init
+                  0x00035a                  _joystick_getX
+                  0x000362                  _joystick_getY
+ .text            0x00036a         0x22 build/default/production/ThermoGaurd_PIR_v001.o
+                  0x00036a                  _PIR_init
+                  0x00037e                  _PIR_GetData
+ .text            0x00038c         0x18 build/default/production/ThermoGaurd_main_v001.o
+                  0x00038c                  _setup
+                  0x00039e                  _main
 
-.dinit            0x0003aa          0x8
- .dinit           0x0003aa          0x8 data_init
+.dinit            0x0003a4          0x8
+ .dinit           0x0003a4          0x8 data_init
