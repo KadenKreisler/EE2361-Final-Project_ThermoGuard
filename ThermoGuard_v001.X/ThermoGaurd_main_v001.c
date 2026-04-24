@@ -8,6 +8,9 @@
 #include "xc.h"
 #include "ThermoGaurd_Joystick_v001.h"
 #include "ThermoGaurd_PIR_v001.h"
+//#include "LCD_functions.h"
+#include "LCD_base_library.h"
+#include "temp_lib_fproject.h"
 
 // CW1: FLASH CONFIGURATION WORD 1 (see PIC24 Family Reference Manual 24.1)
 #pragma config ICS = PGx1          // Comm Channel Select (Emulator EMUC1/EMUD1 pins are shared with PGC1/PGD1)
@@ -26,7 +29,7 @@
 #pragma config FNOSC = FRCPLL      // Oscillator Select (Fast RC Oscillator with PLL module (FRCPLL))
 
 //Test code for PIR and joystick
-/*
+
 int X;
 int Y;
 int b1;
@@ -43,15 +46,71 @@ void __attribute__ ((__interrupt__)) _ADC1Interrupt(void)
 
     PIR = PORTBbits.RB5;
 }
-*/
+
+void init_Servo(void) {
+    //
+      CLKDIVbits.RCDIV = 0;
+   AD1PCFG = 0x9fff;        
+   TRISBbits.TRISB11 = 0; // Sets output compare pin
+ 
+   
+   // Setup for input capture and output compare
+       __builtin_write_OSCCONL(OSCCON & 0xbf);
+    RPOR5bits.RP11R = 18;  
+    __builtin_write_OSCCONL(OSCCON | 0x40);
+   
+ 
+    // Set up Timer 3
+    T3CON = 0;
+    T3CONbits.TCKPS = 0b01;
+    TMR3 = 0;
+    PR3 = 39999;
+   
+   
+    // Output compare setup
+     OC1CON = 0;
+    OC1CONbits.OCTSEL = 1;
+    OC1CONbits.OCM = 6;
+   
+ 
+    // Starts Timer 3
+    T3CONbits.TON = 1;
+   
+   
+      // Code adapted from pre-lab tutorial video
+}
+
+
+// sets servo to position indicated by val, ranging from 1000 to 4000
+    void setServo(int val) {
+       
+        OC1RS = val;
+    }
 
 void setup(void)
 {
     CLKDIVbits.RCDIV = 0;  //Set RCDIV=1:1 (default 2:1) 32MHz or FCY/2=16M
     //Setup Code goes here!
     
+    AD1PCFG = 0xFFFF; 
+ 
     Joystick_init();
+    
     PIR_init();
+    
+    mainConfig();
+    lcd_reset();
+    lcd_init();
+
+    init_tmr1();
+
+    init_Temp();
+    
+    init_Servo();
+    
+    LATBbits.LATB13 = 0;
+    TRISBbits.TRISB13 = 1;
+    
 }
 
 int main(void) {
@@ -60,6 +119,39 @@ int main(void) {
     
     while(1)
     {
+        __delay_ms(5);  
+
+//        if(!init_Temp()) {
+//            lcd_printStr("FAIL");
+//        }
+//        else{
+
+            if(b1 == 1)
+            {
+                setServo(1200);
+            }
+
+            double KRK_temperature = get_TempC();
+
+            char tempStr[20];
+            sprintf(tempStr, "%6.4f C", KRK_temperature);
+
+            char temp1Str[20];
+            sprintf(temp1Str, "%4d", X);
+
+            char temp2Str[20];
+            sprintf(temp2Str, "%4d", Y);
+
+            char temp3Str[20];
+            sprintf(temp3Str, "%d", PIR);
+
+            print(
+                    tempStr,
+                    temp1Str,
+                    temp2Str,
+                    temp3Str
+                );
+//        }
     }
     
     return 0;

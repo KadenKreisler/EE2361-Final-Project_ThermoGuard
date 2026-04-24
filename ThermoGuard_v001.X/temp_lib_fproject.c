@@ -5,36 +5,27 @@
  * Created on April 13, 2026, 11:58 PM
  */
 
+#include "temp_lib_fproject.h"
 
 #include "xc.h"
 #include <stdint.h>
 #include <stdio.h> 
 #define FCY 16000000UL
 #include <libpic30.h> 
-// #include "lcd_proj.h"
-// CW1: FLASH CONFIGURATION WORD 1 (see PIC24 Family Reference Manual 24.1)
-#pragma config ICS = PGx1          // Comm Channel Select (Emulator EMUC1/EMUD1 pins are shared with PGC1/PGD1)
-#pragma config FWDTEN = OFF        // Watchdog Timer Enable (Watchdog Timer is disabled)
-#pragma config GWRP = OFF          // General Code Segment Write Protect (Writes to program memory are allowed)
-#pragma config GCP = OFF           // General Code Segment Code Protect (Code protection is disabled)
-#pragma config JTAGEN = OFF        // JTAG Port Enable (JTAG port is disabled)
-   
 
-
-
-// CW2: FLASH CONFIGURATION WORD 2 (see PIC24 Family Reference Manual 24.1)
-#pragma config I2C1SEL = PRI       // I2C1 Pin Location Select (Use default SCL1/SDA1 pins)
-#pragma config IOL1WAY = OFF       // IOLOCK Protection (IOLOCK may be changed via unlocking seq)
-#pragma config OSCIOFNC = ON       // Primary Oscillator I/O Function (CLKO/RC15 functions as I/O pin)
-#pragma config FCKSM = CSECME      // Clock Switching and Monitor (Clock switching is enabled, 
-// Fail-Safe Clock Monitor is enabled)
-#pragma config FNOSC = FRCPLL      // Oscillator Select (Fast RC Oscillator with PLL module (FRCPLL))
 int detection = 0;
-  double var = 0;
-    char data[9];
+double var = 0;
+char temp_data[9];
 
+void low(){
+    LATBbits.LATB13 = 0;
+    TRISBbits.TRISB13 = 0;
+}
 
-
+void release() {
+    LATBbits.LATB13 = 0;
+    TRISBbits.TRISB13 = 1; 
+}
 
 int temp_reset(void) {
     detection = 0;
@@ -50,24 +41,6 @@ int temp_reset(void) {
     
     return detection;
 
-}
-
-
-void low() {
-        LATBbits.LATB13 = 0;
-       TRISBbits.TRISB13 = 0;
-  
-
-}
-
-void release() {
-    
-  
-  
-      LATBbits.LATB13 = 0;
-    TRISBbits.TRISB13 = 1;
-
-    
 }
 
 void write_0() {
@@ -168,11 +141,6 @@ int init_Temp() {
     return 1;
 }
 
-
-    
-
-
-
 double get_TempC() {
     double temperature = 0;
   
@@ -196,7 +164,7 @@ double get_TempC() {
        __delay_us(10);
      
      for(int i = 0; i < 9; i++ ){
-        data[i] = read_byte();
+        temp_data[i] = read_byte();
         
     }
 
@@ -205,8 +173,8 @@ double get_TempC() {
        
      
        
-       uint16_t lsByte = data[0];
-       uint16_t msByte = data[1];
+       uint16_t lsByte = temp_data[0];
+       uint16_t msByte = temp_data[1];
        int16_t tempWord = 0x0000;
       tempWord = msByte;
                tempWord <<= 8;
@@ -223,10 +191,6 @@ double get_TempC() {
     
     
 }
-
-
-
-
 
 /*
 int main() {

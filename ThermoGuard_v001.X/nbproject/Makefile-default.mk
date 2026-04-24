@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=ThermoGaurd_main_v001.c ThermoGaurd_PIR_v001.c ThermoGaurd_Joystick_v001.c
+SOURCEFILES_QUOTED_IF_SPACED=ThermoGaurd_main_v001.c ThermoGaurd_PIR_v001.c ThermoGaurd_Joystick_v001.c temp_lib_fproject.c LCD_base_library.c LCD_functions.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ThermoGaurd_main_v001.o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o.d ${OBJECTDIR}/ThermoGaurd_PIR_v001.o.d ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ThermoGaurd_main_v001.o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o ${OBJECTDIR}/temp_lib_fproject.o ${OBJECTDIR}/LCD_base_library.o ${OBJECTDIR}/LCD_functions.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o.d ${OBJECTDIR}/ThermoGaurd_PIR_v001.o.d ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d ${OBJECTDIR}/temp_lib_fproject.o.d ${OBJECTDIR}/LCD_base_library.o.d ${OBJECTDIR}/LCD_functions.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o
+OBJECTFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o ${OBJECTDIR}/temp_lib_fproject.o ${OBJECTDIR}/LCD_base_library.o ${OBJECTDIR}/LCD_functions.o
 
 # Source Files
-SOURCEFILES=ThermoGaurd_main_v001.c ThermoGaurd_PIR_v001.c ThermoGaurd_Joystick_v001.c
+SOURCEFILES=ThermoGaurd_main_v001.c ThermoGaurd_PIR_v001.c ThermoGaurd_Joystick_v001.c temp_lib_fproject.c LCD_base_library.c LCD_functions.c
 
 
 
@@ -107,6 +107,24 @@ ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o: ThermoGaurd_Joystick_v001.c  .generate
 	@${RM} ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ThermoGaurd_Joystick_v001.c  -o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
+${OBJECTDIR}/temp_lib_fproject.o: temp_lib_fproject.c  .generated_files/flags/default/37bd85f2f50f7de2d95f2a1ad901ac9c695d19c5 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/temp_lib_fproject.o.d 
+	@${RM} ${OBJECTDIR}/temp_lib_fproject.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  temp_lib_fproject.c  -o ${OBJECTDIR}/temp_lib_fproject.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/temp_lib_fproject.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/LCD_base_library.o: LCD_base_library.c  .generated_files/flags/default/d58599ee42d349d11e896dccab780b29a935dab5 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LCD_base_library.o.d 
+	@${RM} ${OBJECTDIR}/LCD_base_library.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  LCD_base_library.c  -o ${OBJECTDIR}/LCD_base_library.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/LCD_base_library.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/LCD_functions.o: LCD_functions.c  .generated_files/flags/default/2d4431d36bf71e972161715789fd512dad5b1811 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LCD_functions.o.d 
+	@${RM} ${OBJECTDIR}/LCD_functions.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  LCD_functions.c  -o ${OBJECTDIR}/LCD_functions.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/LCD_functions.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
 else
 ${OBJECTDIR}/ThermoGaurd_main_v001.o: ThermoGaurd_main_v001.c  .generated_files/flags/default/2b3af2196c943366680ca14944a89e0d48ea323b .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
@@ -125,6 +143,24 @@ ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o: ThermoGaurd_Joystick_v001.c  .generate
 	@${RM} ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d 
 	@${RM} ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ThermoGaurd_Joystick_v001.c  -o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/temp_lib_fproject.o: temp_lib_fproject.c  .generated_files/flags/default/b1f91e08b582b1e4c4b309946764fde0fc6bed01 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/temp_lib_fproject.o.d 
+	@${RM} ${OBJECTDIR}/temp_lib_fproject.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  temp_lib_fproject.c  -o ${OBJECTDIR}/temp_lib_fproject.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/temp_lib_fproject.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/LCD_base_library.o: LCD_base_library.c  .generated_files/flags/default/a5cfcca298f782bab6a3ab4d066f8245cdf64065 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LCD_base_library.o.d 
+	@${RM} ${OBJECTDIR}/LCD_base_library.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  LCD_base_library.c  -o ${OBJECTDIR}/LCD_base_library.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/LCD_base_library.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/LCD_functions.o: LCD_functions.c  .generated_files/flags/default/8f6b446090a6cfdd10501eeb8d278f07e9d87632 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LCD_functions.o.d 
+	@${RM} ${OBJECTDIR}/LCD_functions.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  LCD_functions.c  -o ${OBJECTDIR}/LCD_functions.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/LCD_functions.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 endif
 
