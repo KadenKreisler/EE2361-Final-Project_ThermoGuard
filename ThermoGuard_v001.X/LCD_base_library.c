@@ -5,16 +5,15 @@
 #define FCY 16000000UL
 #include <libpic30.h>  //for exact delay cmmands 
 
-
-
-void i2c_wait(void) {
+void i2c_wait(void)
+{
     while (I2C1CONbits.SEN || I2C1CONbits.PEN || I2C1CONbits.RCEN || 
            I2C1CONbits.RSEN || I2C1CONbits.ACKEN || I2C1STATbits.TRSTAT);
 }
 //for upper function, if SENDING, PTOP, RECCIEVE, RESTART, ACK, or STOP, block IC2 until finish 
 
-
-void lcd_cmd(char command) {
+void lcd_cmd(char command)
+{
     i2c_wait(); 
     I2C1CONbits.SEN = 1; //trigger start of command sequence
     while(I2C1CONbits.SEN);
@@ -35,7 +34,8 @@ void lcd_cmd(char command) {
     while(I2C1CONbits.PEN); // wait for IC2 to actually halt 
 }
 
-void lcd_printChar(char myChar) {
+void lcd_printChar(char myChar)
+{
     i2c_wait();
     I2C1CONbits.SEN = 1;      //START 
     while(I2C1CONbits.SEN);   
@@ -43,11 +43,10 @@ void lcd_printChar(char myChar) {
     _MI2C1IF = 0;
     I2C1TRN = 0x78;         // Slave Address
     while(!_MI2C1IF);         
-    
+   
     _MI2C1IF = 0;
     I2C1TRN = 0x40;         //command designator: PRINT 
     while(!_MI2C1IF); //this checks if the master interrupt flag is set to 1; 0 = cmd not done yet 
-    
     
     _MI2C1IF = 0;
     I2C1TRN = myChar;       //Character to PRINT 
@@ -58,7 +57,8 @@ void lcd_printChar(char myChar) {
 }
 
 
-void lcd_reset(void) {
+void lcd_reset(void)
+{
     TRISBbits.TRISB6 = 0;   // RB6 = RESET per lab manual schematic
     
     LATBbits.LATB6 = 0;    
@@ -69,11 +69,11 @@ void lcd_reset(void) {
 }
 
 
-void lcd_init(void) { 
+void lcd_init(void)
+{ 
     __delay_ms(50); 
 //from lab background sequence 
     lcd_cmd(0x3A);  // RE=1
-//    lcd_cmd(0x0C);  // 4 line mode 
     lcd_cmd(0x09);
     lcd_cmd(0x06);  // Bottom view
     lcd_cmd(0x1E);  // BS1=1
@@ -91,41 +91,48 @@ void lcd_init(void) {
     __delay_ms(5);  
 }
 
-void lcd_setCursor4rows(char x, char y) {
+void lcd_setCursor4rows(char x, char y)
+{
     char address;
 
-    if (y == 0){ 
+    if (y == 0)
+    { 
         address = 0x00 + x;
     } 
     
-    else if (y == 1){ 
+    else if (y == 1)
+    { 
         address = 0x20 + x; 
     } 
-    else if (y == 2){ 
+    else if (y == 2)
+    { 
         address = 0x40 + x; 
     } 
-    else if (y == 3){ 
+    else if (y == 3)
+    { 
         address = 0x60 + x; 
     } 
-    else    { 
+    else
+    { 
         address = 0x00 + x; 
-        
     } 
+    
     lcd_cmd(0x80 | address);
 }
 
 
-
-void lcd_printStr(const char *str){ //for debug pruposes, const char prevents string from changing
-    while (*str != '\0'){ 
-        
+//for debug pruposes, const char prevents string from changing
+void lcd_printStr(const char *str)
+{
+    while (*str != '\0')
+    { 
         lcd_printChar(*str); 
         str++; 
     }
 }
 
-void mainConfig (void){ 
-
+void mainConfig (void)
+{ 
     TRISBbits.TRISB8 = 1; // SCL1 - establishes "constant comms"
     TRISBbits.TRISB9 = 1; // SDA1 - sends data back and forth
 

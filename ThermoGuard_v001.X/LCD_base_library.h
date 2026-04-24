@@ -32,7 +32,6 @@ void lcd_init(void);
 
 void lcd_setCursor4rows(char x, char y); 
 
-
 void lcd_printStr(const char *str); 
 
 void lcd_demo(void); 

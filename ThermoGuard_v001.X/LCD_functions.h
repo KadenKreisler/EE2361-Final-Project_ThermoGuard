@@ -43,6 +43,6 @@ void alarm_state (void);
 
 void reset_state (void);
 
-
 void print(char* s0, char* s1, char* s2, char* s3); 
+
 #endif
