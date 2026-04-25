@@ -1,13 +1,13 @@
 /*
- * File:   ThermoGaurd_main_v001.c
- * Authors: Kaden, Reid, Justin, Ben
- *
- * Created on April 6, 2026
+ * ThermoGuard Main
+ * Fully integrated system
  */
 
 #include "xc.h"
-#include "LCD_functions.h"
+#include "ThermoGaurd_Joystick_v001.h"
+#include "ThermoGaurd_PIR_v001.h"
 #include "LCD_base_library.h"
+#include "LCD_functions.h"
 #include "TempSen.h"
 
 // ================= CONFIG =================
@@ -23,42 +23,59 @@
 #pragma config FCKSM = CSECME
 #pragma config FNOSC = FRCPLL
 
+volatile int X = 0;
+volatile int Y = 0;
+volatile int b1 = 1;   // button (pull-up, default HIGH)
+volatile int PIR = 0;
+
+double temperature = 0;
+double temperatureF = 0;
 
 
+void __attribute__((__interrupt__, auto_psv)) _ADC1Interrupt(void)
+{
+    IFS0bits.AD1IF = 0;
 
-// ================= SETUP =================
+    X = joystick_getX();
+    Y = joystick_getY();
+
+    b1 = PORTBbits.RB12;   // joystick button
+    PIR = PORTBbits.RB5;   // PIR sensor
+}
+
+
 void setup(void)
 {
     CLKDIVbits.RCDIV = 0;   // 16 MHz FCY
     AD1PCFG = 0xFFFF;
 
- 
-    mainConfig();
+    Joystick_init();
+    PIR_init();
+
+    mainConfig();   // I2C
     lcd_reset();
     lcd_init();
 
-    init_tmr1();   // needed for LCD timing system
+    init_tmr1();    // needed for LCD timing
 
-    temp_init();
 
-    // temp pin default
+    temp_init();    // non-blocking temp system
+
+    // temp pin idle state
     LATBbits.LATB13 = 0;
     TRISBbits.TRISB13 = 1;
 }
 
-// ================= MAIN =================
+
 int main(void)
 {
     setup();
-
-    double temperature = 0;
-    double temperatureF = 0;
 
     while(1)
     {
         __delay_ms(5);   // small system tick
 
-        temp_update();   // non-blocking
+        temp_update();
 
         if(temp_ready())
         {
@@ -66,19 +83,8 @@ int main(void)
           temperatureF = (temperature * 9.0 / 5.0) + 32.0;
         }
 
-        char tempStr[20];
-        sprintf(tempStr, "%6.2f F", temperatureF);
-
-        char xStr[20];
-        sprintf(xStr, "X:%4d", temperature);
-
-        char yStr[20];
-        sprintf(yStr, "Y:%4d", temperature);
-
-        char pirStr[20];
-        sprintf(pirStr, "P:%d", temperature);
-
-        print(tempStr, xStr, yStr, pirStr);
+        LCD_updateInputs(X, Y, b1, temperatureF);
+        LCD_function_main();
     }
 
     return 0;
