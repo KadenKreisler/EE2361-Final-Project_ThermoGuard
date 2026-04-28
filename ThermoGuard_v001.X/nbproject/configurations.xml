@@ -9,6 +9,7 @@
       <itemPath>LCD_base_library.h</itemPath>
       <itemPath>LCD_functions.h</itemPath>
       <itemPath>TempSen.h</itemPath>
+      <itemPath>ThermoGaurd_Servo_v001.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -28,6 +29,7 @@
       <itemPath>LCD_base_library.c</itemPath>
       <itemPath>LCD_functions.c</itemPath>
       <itemPath>TempSen.c</itemPath>
+      <itemPath>ThermoGaurd_Servo_v001.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>

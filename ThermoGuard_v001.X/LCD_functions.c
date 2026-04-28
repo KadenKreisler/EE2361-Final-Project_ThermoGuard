@@ -1,205 +1,508 @@
+#include <stdio.h>
 #include <string.h>
-#include <stdio.h> // Needed for sprintf
-#include "xc.h"    // Needed for SFR definitions
+#include "xc.h"
 
 #define FCY 16000000UL
 #include <libpic30.h>
+
 #include "LCD_base_library.h"
 #include "LCD_functions.h"
 
-int JoyStickValueX = 512, JoyStickValueY = 512;
-int JoyStickClick = 3;
-double currTemp = 25.0, currTimer = 0.0;
-int timetoalarm = 100;
-int state = 1;
+#define INFO     0
+#define SETTEMP  1
+#define SETTIME  2
+#define ARM      3
+#define DISSABLE 4
+#define CONFIRM  5
+#define ALARM    6
 
-#define DEFAULT 1
-#define SETTEMP 2
-#define SETTIME 3
-#define CONFIRM 4
-#define ALARM 5
-#define RESET 0
-#define UNPRESSED 6
-#define PRESSED 7
-
-double adjTemp = 0; 
-double adjTimer = 0;
+int state = INFO;
+int page = 0;
 int click = UNPRESSED;
 
+int PIR;
+
+int JoyStickValueX = 512, JoyStickValueY = 512;
+int buttonState = 1;
+
+int systemEnabled = 0;  
+
+double currTemp = 25.0;
+double maxTemp = 75.0;
+
+int timerSet = 10;
+int timeRemaining = 0;
+
+double adjTemp = 0;
+int adjTimer = 0;
+
+int systemArmed = 0;
+int confirmTarget = 0;
+
 volatile unsigned long rollover = 0;
-unsigned long timer_1_last = 0;
+unsigned long lastStep = 0;
+unsigned long lastSecond = 0;
+unsigned long holdStart = 0;
 
-char adStr0[20];
-char adStr1[20];
-char adStr2[20];
-char adStr3[20];
+//This function sets the servo arm to the alarm position
+void servo_alarm(void)
+{
+    setServo(4000);
+}
 
+//This function sets the servo arm to the "normal" or general operating position
+void servo_reset(void)
+{
+    setServo(3000);
+}
+
+//This interrupt is used to keep track of the total time for timer one using a rollover bit.
 void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void)
 {
     rollover++;
     IFS0bits.T1IF = 0;
 }
 
-void init_tmr1 (void)
-{ 
-    T1CONbits.TON = 0;
-    T1CONbits.TCS = 0;
-    T1CONbits.TCKPS = 0b01;
-    
+//This function initializes the setup for timer 1
+void init_tmr1(void)
+{
+    T1CON = 0;              // clear config
+    T1CONbits.TCKPS = 0b01; // 1:8 prescaler
+
     TMR1 = 0;
-    PR1 = 2000;
-    
-    IPC0bits.T1IP = 2;
-    IFS0bits.T1IF = 0;
-    IEC0bits.T1IE = 1;
-    
-    T1CONbits.TON = 1;
+    PR1 = 2000;             // sets interrupt rate
+
+    IPC0bits.T1IP = 2;      // priority
+    IFS0bits.T1IF = 0;      // clear flag
+    IEC0bits.T1IE = 1;      // enable interrupt
+
+    T1CONbits.TON = 1;      // start timer
+}
+
+//This function 
+void LCD_updateInputs(int x, int y, int button,int pir, double tempF)
+{
+    JoyStickValueX = x;
+    JoyStickValueY = y;
+    currTemp = tempF;
+    buttonState = button;
+    PIR = pir;
+
+    static int prevButton = 1;
+    static int initialized = 0;
+    static unsigned long lastClickTime = 0;
+
+    if(!initialized)
+    {
+        prevButton = button;
+        initialized = 1;
+        return;
+    }
+
+    int xNeutral = (x > 450 && x < 550);
+    int yNeutral = (y > 450 && y < 550);
+
+    if(!xNeutral || !yNeutral)
+    {
+        prevButton = button;
+        return;
+    }
+
+    if(button == 0 && prevButton == 1)
+    {
+        if(rollover - lastClickTime > 200)
+        {
+            click = 1;
+            lastClickTime = rollover;
+        }
+    }
+
+    prevButton = button;
 }
 
 void LCD_function_main(void)
 {
-    if (JoyStickValueX > 600)
+    static int lastX = 512;
+
+    if(state != CONFIRM && state != ALARM)
     {
-        if (rollover - timer_1_last > 200)
+        if(JoyStickValueX > 600 && lastX <= 600)
         {
-            adjTemp += 1.0; 
-            timer_1_last = rollover;
+            page++;
+            click = 0;
+            lastStep = rollover;
+            clear_screen();
+        }
+
+        if(JoyStickValueX < 400 && lastX >= 400)
+        {
+            page--;
+            click = 0;
+            lastStep = rollover;
+            clear_screen();
+        }
+
+        if(page > 4)
+        {
+            page = 0;
         }
         
-        state = SETTEMP;
+        if(page < 0)
+        {
+            page = 4;
+        }
+        
+        state = page;
+    }
+
+    if(rollover - lastStep < 200)
+    {
+        click = 0;
     }
     
-    if (JoyStickValueX < 400)
+    lastX = JoyStickValueX;
+
+    if(systemArmed && systemEnabled)
     {
-        if (rollover - timer_1_last > 200)
+        static int prevPIR = 0;
+
+        if(PIR == 1 && prevPIR == 0)
         {
-            adjTemp -= 1.0;
-            timer_1_last = rollover;
+            timeRemaining = timerSet * 60;
         }
         
-        state = SETTEMP;
-    }
-  
-    if (JoyStickValueY > 600)
-    {
-        if (rollover - timer_1_last > 200)
+        prevPIR = PIR;
+
+        if(rollover - lastSecond > 1000)
         {
-            adjTimer += 1;
-            timer_1_last = rollover;
+            lastSecond = rollover;
+            if(timeRemaining > 0)
+            {
+                timeRemaining--;
+            }
         }
-        
-        state = SETTIME;
     }
-    
-    if (timetoalarm == 0)
-    { 
-        state = ALARM;
-    } 
+
+    if(systemArmed && systemEnabled)
+    {
+        if(timeRemaining == 0 && currTemp > maxTemp)
+        {
+            systemArmed = 0;
+            servo_alarm();
+            state = ALARM;
+            clear_screen();
+        }
+    }
+
+    switch(state)
+    {
+        case INFO:
+            info_state();
+            break;
+            
+        case SETTEMP:
+            settemp_state();
+            break;
+            
+        case SETTIME:
+            settimer_state();
+            break;
+            
+        case ARM:
+            arm_state();
+            break;
+            
+        case DISSABLE:
+            Dissable_state();
+            break;
+            
+        case CONFIRM:
+            confirm_state();
+            break;
+            
+        case ALARM:
+            alarm_state();
+            break;
+    }
 }
 
-void default_state(void)
+void Dissable_state(void)
 {
-    __delay_ms(35);
-    sprintf(adStr0, "Temp: %6.2f C", currTemp);
-    sprintf(adStr1, "Timer: %d m", (int)currTimer);
-    sprintf(adStr2, "Temp Set ->");
-    sprintf(adStr3, "<- Timer Set");
-    print(adStr0, adStr1, adStr2, adStr3);
+    char l0[21], l1[21], l2[21], l3[21];
+
+    snprintf(l0,21,"%-20s","SYSTEM CTRL");
+    snprintf(l1,21,"%-20s"," Turn OFF");
+    snprintf(l2,21,"%-20s","Press: Btn");
+    snprintf(l3,11,"%10s","<Pg>");
+
+    print(l0,l1,l2,l3);
+
+    if(click)
+    {
+        click = 0;
+        systemEnabled = 0;
+        systemArmed = 0;
+        timeRemaining = timerSet * 60;   // ? RESET TIMER
+        servo_reset();
+        clear_screen();
+       
+        state = INFO;
+        page = INFO;
+    }
+}
+
+void info_state(void)
+{
+    char l0[21], l1[21], l2[21], l3[21];
+
+    int m = timeRemaining / 60;
+    int s = timeRemaining % 60;
+
+    snprintf(l0,21,"%-20s","SYSTEM RUN");
+    snprintf(l1,21,"Temp:%4.1fF", currTemp);
+    snprintf(l2,21,"Max :%4.1fF", maxTemp);
+
+    char temp[20];
+    snprintf(temp,20,"%2d:%02d <Pg>", m, s);
+    snprintf(l3,21,"%-20s",temp);
+
+    print(l0,l1,l2,l3);
 }
 
 void settemp_state(void)
 {
-    __delay_ms(35);
-    sprintf(adStr0, "Adjust Temp:");
-    sprintf(adStr1, "Set: %6.2f C", adjTemp);
-    sprintf(adStr2, " ");
-    sprintf(adStr3, "Click to save");
-    print(adStr0, adStr1, adStr2, adStr3);
-    
-    if (click == PRESSED)
+    char l0[21], l1[21], l2[21], l3[21];
+
+    if(rollover - lastStep > 120)
     {
+        if(JoyStickValueY > 600)
+        {
+            adjTemp++;
+        }
+        
+        if(JoyStickValueY < 400)
+        {
+            adjTemp--;
+        }
+        
+        lastStep = rollover;
+    }
+
+    snprintf(l0,21,"%-20s","MAX TEMP");
+
+    char temp[20];
+    snprintf(temp,20,"Val:%4.1f F", adjTemp);
+    snprintf(l1,21,"%-20s",temp);
+
+    snprintf(l2,21,"%-20s","^ v Adjust");
+    snprintf(l3,21,"%-20s","Press=Save");
+
+    print(l0,l1,l2,l3);
+
+    if(click)
+    {
+        click = 0;
+        confirmTarget = 1;
+        clear_screen();
         state = CONFIRM;
-        click = UNPRESSED; // Reset click
     }
 }
 
-void settimer_state (void)
-{ 
-    __delay_ms(35); 
-    sprintf(adStr0, "Temp setpoint:", adjTimer);  // ?x.xxxx Celsius
-    sprintf (adStr1, "Set: %6.4f C", adjTimer); 
-    sprintf (adStr2, " "); 
-    sprintf (adStr3, " "); 
-        
-    print (adStr0, adStr1, adStr2, adStr3); 
-    
-    while (click == UNPRESSED); 
-    
-    state = CONFIRM; 
-}
-
-void confirmation_state (void)
-{ 
-    __delay_ms(35); 
-    sprintf(adStr0, "Are you sure?");  // ?x.xxxx Celsius
-    sprintf (adStr1, " "); 
-    sprintf (adStr2, "No ->"); 
-    sprintf (adStr3, "<- Yes"); 
-        
-    print (adStr0, adStr1, adStr2, adStr3);
-    click = UNPRESSED; 
-    state = DEFAULT;         
-}
-
-void alarm_state (void)
-{ 
-    __delay_ms(35); 
-    sprintf(adStr0, "Thresholds");  // ?x.xxxx Celsius
-    sprintf (adStr1, "Exceeded"); 
-    sprintf (adStr2, "Device"); 
-    sprintf (adStr3, "Disabled"); 
-        
-    print (adStr0, adStr1, adStr2, adStr3); 
-        
-    __delay_ms (20000); 
-    state = RESET; 
-        
-}
-
-void reset_state (void)
-{ 
-    __delay_ms(35); 
-    sprintf(adStr0, "Hold down button");  // ?x.xxxx Celsius
-    sprintf (adStr1, " to reset"); 
-    sprintf (adStr2, "   "); 
-    sprintf (adStr3, "   "); 
-        
-    print (adStr0, adStr1, adStr2, adStr3); 
-    
-    while (click != PRESSED); 
-    
-    click = UNPRESSED; 
-    state = DEFAULT; 
-}
-
-
-void print(char* s0, char* s1, char* s2, char* s3)
+void settimer_state(void)
 {
-    int i;
-    char* data[4] = {s0, s1, s2, s3};
-    
-    for (int row = 0; row < 4; row++)
+    char l0[21], l1[21], l2[21], l3[21];
+
+    if(rollover - lastStep > 120)
     {
-        lcd_setCursor4rows(0, row);
-        
-        for (i = 0; i < 20; i++)
+        if(JoyStickValueY > 600)
         {
-            if (data[row][i] == '\0')
-            { 
-                break;
-            } 
+            adjTimer++;
+        }
+        
+        if(JoyStickValueY < 400 && adjTimer>0) 
+        {
+            adjTimer--;
+        }
+        
+        lastStep = rollover;
+    }
+
+    snprintf(l0,21,"%-20s","SET TIMER");
+
+    char temp[20];
+    snprintf(temp,20,"Val:%2d min", adjTimer);
+    snprintf(l1,21,"%-20s",temp);
+
+    snprintf(l2,21,"%-20s","^ v Adjust");
+    snprintf(l3,21,"%-20s","Press=Save");
+
+    print(l0,l1,l2,l3);
+
+    if(click)
+    {
+        click = 0;
+        confirmTarget = 2;
+        clear_screen();
+        state = CONFIRM;
+    }
+}
+
+void arm_state(void)
+{
+    char l0[21], l1[21], l2[21], l3[21];
+
+    snprintf(l0,21,"%-20s","READY");
+
+    char t1[20];
+    snprintf(t1,20,"Temp:%4.1fF", maxTemp);
+    snprintf(l1,21,"%-20s",t1);
+
+    char t2[20];
+    snprintf(t2,20,"Time:%2dmin", timerSet);
+    snprintf(l2,21,"%-20s",t2);
+
+    snprintf(l3,21,"%-20s","Press: Btn");
+
+    print(l0,l1,l2,l3);
+
+    if(click)
+    {
+        click = 0;
+        systemEnabled = 1;
+        systemArmed = 1;
+        timeRemaining = timerSet * 60;
+        clear_screen();
+        state = INFO;
+        page = 0;
+    }
+}
+
+void confirm_state(void)
+{
+    char l0[21], l1[21], l2[21], l3[21];
+    static int sel = 0;
+
+    if(JoyStickValueX < 400)
+    {
+        sel = 0;
+    }
+    
+    if(JoyStickValueX > 600)
+    {
+        sel = 1;
+    }
+    
+    snprintf(l0,21,"%-20s","CONFIRM");
+
+    if(confirmTarget == 1)
+    {
+        snprintf(l1,21,"%-20s","Set Temp?");
+    }
+    else
+    {
+        snprintf(l1,21,"%-20s","Set Time?");
+    }
+    
+    char temp[20];
+    if(confirmTarget == 1)
+    {
+        snprintf(temp,20,"Val:%4.1f F", adjTemp);
+    }
+    else
+    {
+        snprintf(temp,20,"Val:%2d min", adjTimer);
+    }
+    
+    snprintf(l2,21,"%-20s",temp);
+
+    if(sel == 0)
+    {
+        snprintf(l3,21,"%-20s",">YES   NO");
+    }
+    else
+    {
+        snprintf(l3,21,"%-20s"," YES  >NO");
+    }
+    
+    print(l0,l1,l2,l3);
+
+    if(click)
+    {
+        click = 0;
+
+        if(sel == 0)
+        {
+            if(confirmTarget == 1)
+            {
+                maxTemp = adjTemp;
+            }
             
-            lcd_printChar(data[row][i]);
+            if(confirmTarget == 2)
+            {
+                timerSet = adjTimer;
+            }
+        }
+
+        clear_screen();
+        state = ARM;
+        page = ARM;
+    }
+}
+
+void alarm_state(void)
+{
+    char l0[21], l1[21], l2[21], l3[21];
+
+    snprintf(l0,21,"%-20s","!!! ALARM !!!");
+    snprintf(l1,21,"%-20s","Unattended");
+    snprintf(l2,21,"%-20s","Hold Btn");
+    snprintf(l3,21,"%-20s","3s to Reset");
+
+    print(l0,l1,l2,l3);
+
+    if(buttonState == 0)
+    {
+        if(holdStart == 0)
+        {
+            holdStart = rollover;
+        }
+        
+        if(rollover - holdStart > 3000)
+        {
+            holdStart = 0;
+            servo_reset();
+            clear_screen();
+            state = INFO;
         }
     }
+    else
+    {
+        holdStart = 0;
+    }
+}
+
+void print(char* s0,char* s1,char* s2,char* s3)
+{
+    char* d[4] = {s0,s1,s2,s3};
+
+    for(int r = 0; r < 4; r++)
+    {
+        lcd_setCursor4rows(0,r);
+        for(int i = 0; i < 20; i++)
+        {
+            if(d[r][i])
+            {
+                lcd_printChar(d[r][i]);
+            }
+            else
+            {
+                lcd_printChar(' ');
+            }
+        }
+    }
+}
+
+void clear_screen(void)
+{
+    print("","","","");
 }

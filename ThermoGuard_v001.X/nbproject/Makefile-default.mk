@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=ThermoGaurd_main_v001.c ThermoGaurd_PIR_v001.c ThermoGaurd_Joystick_v001.c LCD_base_library.c LCD_functions.c TempSen.c
+SOURCEFILES_QUOTED_IF_SPACED=ThermoGaurd_main_v001.c ThermoGaurd_PIR_v001.c ThermoGaurd_Joystick_v001.c LCD_base_library.c LCD_functions.c TempSen.c ThermoGaurd_Servo_v001.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ThermoGaurd_main_v001.o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o ${OBJECTDIR}/LCD_base_library.o ${OBJECTDIR}/LCD_functions.o ${OBJECTDIR}/TempSen.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o.d ${OBJECTDIR}/ThermoGaurd_PIR_v001.o.d ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d ${OBJECTDIR}/LCD_base_library.o.d ${OBJECTDIR}/LCD_functions.o.d ${OBJECTDIR}/TempSen.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ThermoGaurd_main_v001.o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o ${OBJECTDIR}/LCD_base_library.o ${OBJECTDIR}/LCD_functions.o ${OBJECTDIR}/TempSen.o ${OBJECTDIR}/ThermoGaurd_Servo_v001.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o.d ${OBJECTDIR}/ThermoGaurd_PIR_v001.o.d ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o.d ${OBJECTDIR}/LCD_base_library.o.d ${OBJECTDIR}/LCD_functions.o.d ${OBJECTDIR}/TempSen.o.d ${OBJECTDIR}/ThermoGaurd_Servo_v001.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o ${OBJECTDIR}/LCD_base_library.o ${OBJECTDIR}/LCD_functions.o ${OBJECTDIR}/TempSen.o
+OBJECTFILES=${OBJECTDIR}/ThermoGaurd_main_v001.o ${OBJECTDIR}/ThermoGaurd_PIR_v001.o ${OBJECTDIR}/ThermoGaurd_Joystick_v001.o ${OBJECTDIR}/LCD_base_library.o ${OBJECTDIR}/LCD_functions.o ${OBJECTDIR}/TempSen.o ${OBJECTDIR}/ThermoGaurd_Servo_v001.o
 
 # Source Files
-SOURCEFILES=ThermoGaurd_main_v001.c ThermoGaurd_PIR_v001.c ThermoGaurd_Joystick_v001.c LCD_base_library.c LCD_functions.c TempSen.c
+SOURCEFILES=ThermoGaurd_main_v001.c ThermoGaurd_PIR_v001.c ThermoGaurd_Joystick_v001.c LCD_base_library.c LCD_functions.c TempSen.c ThermoGaurd_Servo_v001.c
 
 
 
@@ -125,6 +125,12 @@ ${OBJECTDIR}/TempSen.o: TempSen.c  .generated_files/flags/default/a3643c585b545d
 	@${RM} ${OBJECTDIR}/TempSen.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  TempSen.c  -o ${OBJECTDIR}/TempSen.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/TempSen.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
+${OBJECTDIR}/ThermoGaurd_Servo_v001.o: ThermoGaurd_Servo_v001.c  .generated_files/flags/default/e4eb986c82347a63e1a5b41af69d23be2842b20f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_Servo_v001.o.d 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_Servo_v001.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ThermoGaurd_Servo_v001.c  -o ${OBJECTDIR}/ThermoGaurd_Servo_v001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ThermoGaurd_Servo_v001.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
 else
 ${OBJECTDIR}/ThermoGaurd_main_v001.o: ThermoGaurd_main_v001.c  .generated_files/flags/default/2b3af2196c943366680ca14944a89e0d48ea323b .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
@@ -161,6 +167,12 @@ ${OBJECTDIR}/TempSen.o: TempSen.c  .generated_files/flags/default/ee5f2cf45e83a9
 	@${RM} ${OBJECTDIR}/TempSen.o.d 
 	@${RM} ${OBJECTDIR}/TempSen.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  TempSen.c  -o ${OBJECTDIR}/TempSen.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/TempSen.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/ThermoGaurd_Servo_v001.o: ThermoGaurd_Servo_v001.c  .generated_files/flags/default/ff8918c6fbe81b3c397b16f1d6e40db0647d587d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_Servo_v001.o.d 
+	@${RM} ${OBJECTDIR}/ThermoGaurd_Servo_v001.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ThermoGaurd_Servo_v001.c  -o ${OBJECTDIR}/ThermoGaurd_Servo_v001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ThermoGaurd_Servo_v001.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 endif
 

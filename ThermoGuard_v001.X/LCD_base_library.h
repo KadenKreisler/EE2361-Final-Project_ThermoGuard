@@ -19,24 +19,23 @@
 extern "C" {
 #endif /* __cplusplus */
 
-  // Insert declarations
- void i2c_wait(void); 
- 
- void lcd_cmd(char command); 
- 
- void lcd_printChar(char myChar); 
- 
-void lcd_reset(void); 
+    void i2c_wait(void); 
 
-void lcd_init(void); 
+    void lcd_cmd(char command); 
 
-void lcd_setCursor4rows(char x, char y); 
+    void lcd_printChar(char myChar); 
 
-void lcd_printStr(const char *str); 
+    void lcd_reset(void); 
 
-void lcd_demo(void); 
+    void lcd_init(void); 
 
-void mainConfig (void); 
+    void lcd_setCursor4rows(char x, char y); 
+
+    void lcd_printStr(const char *str); 
+
+    void lcd_demo(void); 
+
+    void mainConfig (void); 
 
 #endif
 

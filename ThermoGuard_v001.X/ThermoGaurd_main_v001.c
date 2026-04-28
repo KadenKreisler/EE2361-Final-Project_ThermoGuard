@@ -8,8 +8,9 @@
 #include "xc.h"
 #include "ThermoGaurd_Joystick_v001.h"
 #include "ThermoGaurd_PIR_v001.h"
-#include "LCD_functions.h"
+#include "ThermoGaurd_Servo_v001.h"
 #include "LCD_base_library.h"
+#include "LCD_functions.h"
 #include "TempSen.h"
 
 // CW1: FLASH CONFIGURATION WORD 1 (see PIC24 Family Reference Manual 24.1)
@@ -18,7 +19,6 @@
 #pragma config GWRP = OFF          // General Code Segment Write Protect (Writes to program memory are allowed)
 #pragma config GCP = OFF           // General Code Segment Code Protect (Code protection is disabled)
 #pragma config JTAGEN = OFF        // JTAG Port Enable (JTAG port is disabled)
-
 
 // CW2: FLASH CONFIGURATION WORD 2 (see PIC24 Family Reference Manual 24.1)
 #pragma config I2C1SEL = PRI       // I2C1 Pin Location Select (Use default SCL1/SDA1 pins)
@@ -30,56 +30,25 @@
 
 //Test code for PIR and joystick
 
-int X_val;
-int Y_val;
-int b1;
-int PIR;
+volatile int X_val = 0;
+volatile int Y_val = 0;
+volatile int b1 = 1;
+volatile int PIR = 0;
 
+double temperature = 0;
+double temperatureF = 0;
+
+//This interrupt acts as the update for the joystick analong inputs as it only
+//updates each time both finish converting.
 void __attribute__ ((__interrupt__)) _ADC1Interrupt(void)
 {
     IFS0bits.AD1IF = 0; 
     
     X_val = joystick_getX();
     Y_val = joystick_getY();
-
-    b1 = PORTBbits.RB12;
-
-    PIR = PORTBbits.RB5;
 }
 
-void init_Servo(void) {
-
-   TRISBbits.TRISB11 = 0; // Sets output compare pin
-   
-   // Setup for input capture and output compare
-    __builtin_write_OSCCONL(OSCCON & 0xbf);
-    RPOR5bits.RP11R = 18;  
-    __builtin_write_OSCCONL(OSCCON | 0x40);
-   
- 
-    // Set up Timer 3
-    T3CON = 0;
-    T3CONbits.TCKPS = 0b01;
-    TMR3 = 0;
-    PR3 = 39999;
-   
-   
-    // Output compare setup
-    OC1CON = 0;
-    OC1CONbits.OCTSEL = 1;
-    OC1CONbits.OCM = 6;
-
-    // Starts Timer 3
-    T3CONbits.TON = 1;
-}
-
-
-// sets servo to position indicated by val, ranging from 1000 to 4000
-    void setServo(int val)
-    {
-        OC1RS = val;
-    }
-
+//This is the setup function which initializes each library used.
 void setup(void)
 {
     CLKDIVbits.RCDIV = 0;  //Set RCDIV=1:1 (default 2:1) 32MHz or FCY/2=16M
@@ -100,53 +69,27 @@ void setup(void)
     temp_init();
     
     init_Servo();
-    
-    LATBbits.LATB13 = 0;
-    TRISBbits.TRISB13 = 1;
 }
 
 int main(void) {
     setup();
-  
-    double temperature = 0;
-    double temperatureF = 0;
-    
+
     while(1)
     {
-        __delay_ms(5);  
-            
-        if(b1 == 1)
-        {
-            setServo(1200);
-        }
+        __delay_ms(5);   // small system tick
+
+        temp_update();
+        PIR = PIR_GetData();
         
-        temp_update();   // non-blocking
-        
+        //This checks if the temp sensor has finished converting its data
         if(temp_ready())
         {
           temperature = get_TempC();
           temperatureF = (temperature * 9.0 / 5.0) + 32.0;
         }
 
-
-        char tempStr[20];
-        sprintf(tempStr, "%6.4f F", temperatureF);
-
-        char temp1Str[20];
-        sprintf(temp1Str, "%4d", X_val);
-
-        char temp2Str[20];
-        sprintf(temp2Str, "%4d", Y_val);
-
-        char temp3Str[20];
-        sprintf(temp3Str, "%d", PIR);
-
-        print(
-                tempStr,
-                temp1Str,
-                temp2Str,
-                temp3Str
-            );
+        LCD_updateInputs(X_val, Y_val, b1, PIR, temperatureF);
+        LCD_function_main();
     }
     
     return 0;

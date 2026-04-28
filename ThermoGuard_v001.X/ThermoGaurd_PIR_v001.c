@@ -9,14 +9,15 @@
 #include "xc.h"
 #include "ThermoGaurd_PIR_v001.h"
 
+//This function initializes the pins for the PIR motion sensor
 void PIR_init()
 {    
     AD1PCFG |= 0b0000000000100000; //Sets pin 5 digital
     TRISB |= 0b0000000000100000;   // Set pin 5 as input
 }
 
+//This function returns the state of the PIR sensor, 1 means something detected, 0 means nothing
 int PIR_GetData()
 {
     return PORTBbits.RB5;
 }
-//Potentially an interupt for the data resetting the timeout timer?

@@ -14,6 +14,7 @@ extern "C" {
     void Joystick_init();
     int joystick_getX();
     int joystick_getY();
+    int joystick_getPB();
 
 
 #ifdef	__cplusplus

@@ -9,7 +9,8 @@
 #include "xc.h"
 #include "ThermoGaurd_Joystick_v001.h"
 
-//RB12 for the button - CN 14
+//This function initializes the joystick pins and sets up the analog registers
+//and interrupts to happen after 2 conversions 
 void Joystick_init()
 {
     //AN0 and AN1
@@ -52,14 +53,20 @@ void Joystick_init()
     TRISB |= 0b0001000000000000;   // Set pin RB12 as input
 }
 
+//This function gets the X axis value from analog buffer 0
 int joystick_getX()
 {
     return ADC1BUF0;
 }
 
+//This function gets the Y axis value from analog buffer 1
 int joystick_getY()
 {
     return ADC1BUF1;
 }
 
-//some interupt for the PB or a function for polling?
+//This function returns the state the the joystick PB
+int joystick_getPB()
+{
+    return PORTBbits.RB12;
+}
