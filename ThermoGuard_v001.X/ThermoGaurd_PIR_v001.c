@@ -9,7 +9,7 @@
 #include "xc.h"
 #include "ThermoGaurd_PIR_v001.h"
 
-//This function initializes the pins for the PIR motion sensor
+//This function initializes the pin used for the PIR motion sensor
 void PIR_init()
 {    
     AD1PCFG |= 0b0000000000100000; //Sets pin 5 digital

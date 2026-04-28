@@ -10,7 +10,7 @@
 #include "ThermoGaurd_Joystick_v001.h"
 
 //This function initializes the joystick pins and sets up the analog registers
-//and interrupts to happen after 2 conversions 
+//and configures the interrupt to happen after 2 conversions 
 void Joystick_init()
 {
     //AN0 and AN1
@@ -65,7 +65,7 @@ int joystick_getY()
     return ADC1BUF1;
 }
 
-//This function returns the state the the joystick PB
+//This function returns the state of the joystick PB
 int joystick_getPB()
 {
     return PORTBbits.RB12;

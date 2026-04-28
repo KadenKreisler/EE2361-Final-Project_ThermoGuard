@@ -79,7 +79,8 @@ void init_tmr1(void)
     T1CONbits.TON = 1;      // start timer
 }
 
-//This function 
+//This function updates all the local variables used across the general functioning of the LCD
+//including de-bouncing the joystick PB
 void LCD_updateInputs(int x, int y, int button,int pir, double tempF)
 {
     JoyStickValueX = x;
@@ -120,6 +121,9 @@ void LCD_updateInputs(int x, int y, int button,int pir, double tempF)
     prevButton = button;
 }
 
+//This is the main function to run the entirety of the ThermoGaurd software
+//It contains a state machine and combines all of our inputs to update and interact
+//With the LCD and the different screens we choose to show on it.
 void LCD_function_main(void)
 {
     static int lastX = 512;
@@ -226,6 +230,7 @@ void LCD_function_main(void)
     }
 }
 
+//This function is the screen/state where the user disables the device
 void Dissable_state(void)
 {
     char l0[21], l1[21], l2[21], l3[21];
@@ -242,7 +247,7 @@ void Dissable_state(void)
         click = 0;
         systemEnabled = 0;
         systemArmed = 0;
-        timeRemaining = timerSet * 60;   // ? RESET TIMER
+        timeRemaining = timerSet * 60;   //RESET TIMER
         servo_reset();
         clear_screen();
        
@@ -251,6 +256,8 @@ void Dissable_state(void)
     }
 }
 
+//This function is the main state for the general running of our device
+//It displays all the information and allows the user to traverse to other screens
 void info_state(void)
 {
     char l0[21], l1[21], l2[21], l3[21];
@@ -269,6 +276,9 @@ void info_state(void)
     print(l0,l1,l2,l3);
 }
 
+//This function is used to set the temperature setpoint
+//it pushes a display, and follows the joystick y axis to determine the increase
+//or decrease of the temperature set
 void settemp_state(void)
 {
     char l0[21], l1[21], l2[21], l3[21];
@@ -308,6 +318,9 @@ void settemp_state(void)
     }
 }
 
+//This function is used to set the timer length
+//it pushes a display, and follows the joystick y axis to determine the increase
+//or decrease of the timer set
 void settimer_state(void)
 {
     char l0[21], l1[21], l2[21], l3[21];
@@ -347,6 +360,9 @@ void settimer_state(void)
     }
 }
 
+//This function arms the device
+//Displays an output message and when the user chooses to move forward
+//The device is rearmed and set to run
 void arm_state(void)
 {
     char l0[21], l1[21], l2[21], l3[21];
@@ -377,6 +393,9 @@ void arm_state(void)
     }
 }
 
+//This function is the interaction to confirm a user choice.
+//Pushes a message and follows movement to determine a user choice and allow them
+//to pick the outcome
 void confirm_state(void)
 {
     char l0[21], l1[21], l2[21], l3[21];
@@ -449,6 +468,9 @@ void confirm_state(void)
     }
 }
 
+//This function holds the interactions for the device in the alarm state
+//pushing an alarm message, and locking the servo while waiting for the user to
+//reset the device
 void alarm_state(void)
 {
     char l0[21], l1[21], l2[21], l3[21];
@@ -481,6 +503,7 @@ void alarm_state(void)
     }
 }
 
+//This function prints a string for each row on the LCD
 void print(char* s0,char* s1,char* s2,char* s3)
 {
     char* d[4] = {s0,s1,s2,s3};
@@ -502,6 +525,7 @@ void print(char* s0,char* s1,char* s2,char* s3)
     }
 }
 
+//This function clears the screen by printing a blank to each row.
 void clear_screen(void)
 {
     print("","","","");

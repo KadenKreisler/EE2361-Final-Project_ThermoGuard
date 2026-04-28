@@ -142,7 +142,7 @@ int read_byte()
     return byte_2;
 }
 
-//This function initializes the state machine and pins used by the temp sensor
+//This function initializes the state machine and pin used by the temp sensor
 void temp_init(void)
 {
     temp_state = TEMP_IDLE;
