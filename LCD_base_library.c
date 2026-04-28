@@ -1,17 +1,17 @@
-
 #include "xc.h"
 #include "LCD_base_library.h"
 
 #define FCY 16000000UL
 #include <libpic30.h>  //for exact delay cmmands 
 
+//if SENDING, PTOP, RECCIEVE, RESTART, ACK, or STOP, block IC2 until finish 
 void i2c_wait(void)
 {
     while (I2C1CONbits.SEN || I2C1CONbits.PEN || I2C1CONbits.RCEN || 
            I2C1CONbits.RSEN || I2C1CONbits.ACKEN || I2C1STATbits.TRSTAT);
 }
-//for upper function, if SENDING, PTOP, RECCIEVE, RESTART, ACK, or STOP, block IC2 until finish 
 
+//This function send a specified command to the LCD through I2C
 void lcd_cmd(char command)
 {
     i2c_wait(); 
@@ -34,6 +34,7 @@ void lcd_cmd(char command)
     while(I2C1CONbits.PEN); // wait for IC2 to actually halt 
 }
 
+//This function sends data to the LCD through I2C which then prints on the screen.
 void lcd_printChar(char myChar)
 {
     i2c_wait();
@@ -56,7 +57,7 @@ void lcd_printChar(char myChar)
     while(I2C1CONbits.PEN); // STOP
 }
 
-
+//This function resets the LCD
 void lcd_reset(void)
 {
     TRISBbits.TRISB6 = 0;   // RB6 = RESET per lab manual schematic
@@ -68,11 +69,11 @@ void lcd_reset(void)
     __delay_ms(50);       
 }
 
-
+//This function initializes the LCD screen setting up all the configurations
 void lcd_init(void)
 { 
     __delay_ms(50); 
-//from lab background sequence 
+    //from lab background sequence 
     lcd_cmd(0x3A);  // RE=1
     lcd_cmd(0x09);
     lcd_cmd(0x06);  // Bottom view
@@ -91,6 +92,7 @@ void lcd_init(void)
     __delay_ms(5);  
 }
 
+//This function is used to set the user cursor for a 4 line setup
 void lcd_setCursor4rows(char x, char y)
 {
     char address;
@@ -99,7 +101,6 @@ void lcd_setCursor4rows(char x, char y)
     { 
         address = 0x00 + x;
     } 
-    
     else if (y == 1)
     { 
         address = 0x20 + x; 
@@ -121,7 +122,7 @@ void lcd_setCursor4rows(char x, char y)
 }
 
 
-//for debug pruposes, const char prevents string from changing
+//This function prints a string of characters
 void lcd_printStr(const char *str)
 {
     while (*str != '\0')
@@ -131,6 +132,7 @@ void lcd_printStr(const char *str)
     }
 }
 
+//This function sets up the I2C portion for initializing the LCD
 void mainConfig (void)
 { 
     TRISBbits.TRISB8 = 1; // SCL1 - establishes "constant comms"
@@ -143,6 +145,3 @@ void mainConfig (void)
     
     I2C1CONbits.I2CEN = 1;   
 }
-
-
-
