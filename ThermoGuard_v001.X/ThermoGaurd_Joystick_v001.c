@@ -13,12 +13,12 @@
 //and configures the interrupt to happen after 2 conversions 
 void Joystick_init()
 {
-    //AN0 and AN1
-    AD1PCFGbits.PCFG0 = 0; //sets pin RA0 to analog
-    TRISAbits.TRISA0 = 1; //sets pin RA0 to input
+    //AN4 and AN5
+    AD1PCFGbits.PCFG4 = 0; //sets pin RB4 to analog
+    TRISBbits.TRISB2 = 1; //sets pin RB4 to input
     
-    AD1PCFGbits.PCFG1 = 0; //sets pin RA1 to analog
-    TRISAbits.TRISA1 = 1; //sets pin RA1 to input
+    AD1PCFGbits.PCFG5 = 0; //sets pin RB5 to analog
+    TRISBbits.TRISB2 = 1; //sets pin RB5 to input
     
 //    1. Configure the A/D module:
 
@@ -32,8 +32,8 @@ void Joystick_init()
     AD1CON2bits.CSCNA = 1; //Scans the channels in the CSSL register
     //Ex. AN0 and AN1 like configured below
     
-    AD1CSSLbits.CSSL0 = 1; // AN0
-    AD1CSSLbits.CSSL1 = 1; // AN1
+    AD1CSSLbits.CSSL4 = 1; // AN4
+    AD1CSSLbits.CSSL5 = 1; // AN5
    
     AD1CON3bits.ADCS = 1; // TAD of 125ns
     
@@ -56,13 +56,13 @@ void Joystick_init()
 //This function gets the X axis value from analog buffer 0
 int joystick_getX()
 {
-    return ADC1BUF0;
+    return ADC1BUF4;
 }
 
 //This function gets the Y axis value from analog buffer 1
 int joystick_getY()
 {
-    return ADC1BUF1;
+    return ADC1BUF5;
 }
 
 //This function returns the state of the joystick PB

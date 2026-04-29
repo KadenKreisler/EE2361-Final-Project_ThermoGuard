@@ -40,7 +40,7 @@ double temperatureF = 0;
 
 //This interrupt acts as the update for the joystick analong inputs as it only
 //updates each time both finish converting.
-void __attribute__ ((__interrupt__)) _ADC1Interrupt(void)
+void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void)
 {
     IFS0bits.AD1IF = 0; 
     

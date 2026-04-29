@@ -60,12 +60,12 @@ void lcd_printChar(char myChar)
 //This function resets the LCD
 void lcd_reset(void)
 {
-    TRISBbits.TRISB6 = 0;   // RB6 = RESET per lab manual schematic
+    TRISBbits.TRISB10 = 0;   // RB6 = RESET per lab manual schematic
     
-    LATBbits.LATB6 = 0;    
+    LATBbits.LATB10 = 0;    
     __delay_ms(10);         
 
-    LATBbits.LATB6 = 1;     
+    LATBbits.LATB10 = 1;     
     __delay_ms(50);       
 }
 

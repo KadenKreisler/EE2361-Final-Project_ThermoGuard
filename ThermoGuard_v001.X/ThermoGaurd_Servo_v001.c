@@ -12,11 +12,11 @@
 //This function initializes the output capture, timer 2, and pin used to control the servo.
 void init_Servo(void)
 {
-   TRISBbits.TRISB7 = 0; // Sets output compare pin
+   TRISBbits.TRISB12 = 0; // Sets output compare pin
    
    // Setup for input capture and output compare
     __builtin_write_OSCCONL(OSCCON & 0xbf);
-    RPOR3bits.RP7R = 18;  
+    RPOR6bits.RP12R = 18;  
     __builtin_write_OSCCONL(OSCCON | 0x40);
   
     T2CON = 0;

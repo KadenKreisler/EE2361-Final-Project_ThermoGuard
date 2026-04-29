@@ -20,7 +20,7 @@ int state = INFO;
 int page = 0;
 int click = UNPRESSED;
 
-int PIR;
+extern int PIR;
 
 int JoyStickValueX = 512, JoyStickValueY = 512;
 int buttonState = 1;
