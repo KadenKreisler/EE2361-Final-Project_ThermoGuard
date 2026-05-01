@@ -46,6 +46,8 @@ void __attribute__ ((__interrupt__)) _ADC1Interrupt(void)
     
     X_val = joystick_getX();
     Y_val = joystick_getY();
+    
+    b1 = joystick_getPB();
 }
 
 //This is the setup function which initializes each library used.

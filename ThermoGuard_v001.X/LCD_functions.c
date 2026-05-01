@@ -20,7 +20,7 @@ int state = INFO;
 int page = 0;
 int click = UNPRESSED;
 
-int PIR;
+extern int PIR;
 
 int JoyStickValueX = 512, JoyStickValueY = 512;
 int buttonState = 1;
@@ -33,8 +33,8 @@ double maxTemp = 75.0;
 int timerSet = 10;
 int timeRemaining = 0;
 
-double adjTemp = 0;
-int adjTimer = 0;
+double adjTemp = 75;
+int adjTimer = 1;
 
 int systemArmed = 0;
 int confirmTarget = 0;
@@ -189,7 +189,7 @@ void LCD_function_main(void)
 
     if(systemArmed && systemEnabled)
     {
-        if(timeRemaining == 0 && currTemp > maxTemp)
+        if(timeRemaining == 0 || currTemp > maxTemp)
         {
             systemArmed = 0;
             servo_alarm();
